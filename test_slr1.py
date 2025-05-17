@@ -1,12 +1,20 @@
 from lector import Lector
 from Bottom_Up import LR0Parser
 
+# Representación de la gramática
 grammar = {
-    'S': ['aSb', 'c']
+    'S': ['S+T', 'T'],
+    'T': ['T*F', 'F'],
+    'F': ['(S)', 'i']
 }
-noTerminals = ['S']
-terminals = ['a', 'b', 'c']
-cadenas = ['aacbb', 'acb', 'ab']
 
+noTerminals = ['S', 'T', 'F']
+terminals = ['+', '*', '(', ')', 'i']
+cadenas = ['i+i', '(i)', '(i+i)*i)']
+
+# Calcular FIRST y FOLLOW
 lector = Lector(noTerminals, grammar, {}, {})
-parser = LR0Parser(grammar, terminals, noTerminals, cadenas, lector.followResultado)
+follow = lector.followResultado
+
+# Ejecutar el parser SLR(1)
+parser = LR0Parser(grammar, terminals, noTerminals, cadenas, follow)
